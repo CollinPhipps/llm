@@ -50,7 +50,7 @@ def estimate_loss(model, dataloaders, device, eval_iters=200):
     model.train()
     return out
 
-def train(model, dataloaders, optimizer, iters, device, save_path, report_every=None):
+def train(model, dataloaders, optimizer, iters, device, save_dir, report_every=None):
     model = model.to(device)
     results = []  # (step, train_loss, val_loss)
 
@@ -72,6 +72,6 @@ def train(model, dataloaders, optimizer, iters, device, save_path, report_every=
                 losses = estimate_loss(model, dataloaders, device)
                 print(f"Step: {step}/{total_steps}, Train Loss: {losses['train']}, Val Loss: {losses['val']}")
                 results.append((step, losses['train'], losses['val']))
-                torch.save({'model': model.state_dict(), 'optimizer': optimizer.state_dict(), 'step': step}, save_path)
+                torch.save({'model': model.state_dict(), 'optimizer': optimizer.state_dict(), 'step': step}, f'{save_dir}/ckpt_iter{iter}.pt')
 
     return results
