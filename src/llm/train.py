@@ -15,11 +15,10 @@ class TokenDataset(Dataset):
         y = self.data[idx + 1 : idx + 1 + self.block_size]
         return x, y
 
-def get_loaders(encoded_corpus, block_size, batch_size, shuffle=True):
-    data = torch.tensor(encoded_corpus, dtype=torch.long)
-    n = int(0.8 * len(data))
-    train_data = data[:n]
-    test_data = data[n:]
+def get_loaders(encoded_corpus_tensor, block_size, batch_size, shuffle=True):
+    n = int(0.8 * len(encoded_corpus_tensor))
+    train_data = encoded_corpus_tensor[:n]
+    test_data = encoded_corpus_tensor[n:]
 
     train_dataset = TokenDataset(train_data, block_size)
     val_dataset = TokenDataset(test_data, block_size)
