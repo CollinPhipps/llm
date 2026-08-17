@@ -7,7 +7,9 @@ authors = [
     { name = "Collin Phipps", email = "phippscollin@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "torch>=2.13.0",
+]
 
 [project.scripts]
 llm = "llm:main"
