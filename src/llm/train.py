@@ -53,21 +53,26 @@ def estimate_loss(model, dataloaders, device, eval_iters=200):
 
 def train(model, dataloaders, optimizer, iters, device, save_path, report_every=None):
     model = model.to(device)
-    results = [] # (epoch, train_loss, val_loss)
+    results = []  # (step, train_loss, val_loss)
 
+    steps_per_epoch = len(dataloaders['train'])
+    total_steps = iters * steps_per_epoch
+    report_interval = total_steps // report_every if report_every else None
+
+    step = 0
     for iter in range(iters):
-
-        if report_every is not None and (iter + 1) % (iters // report_every) == 0:
-            losses = estimate_loss(model, dataloaders, device)
-            print(f"Epoch: {iter}, Train Loss: {losses['train']}, Val Loss: {losses['val']}")
-            results.append((iter, losses['train'], losses['val']))
-            torch.save({'model': model.state_dict(), 'optimizer': optimizer.state_dict(), 'iter': iter}, save_path)
-
         for X, Y in dataloaders['train']:
             X, Y = X.to(device), Y.to(device)
             optimizer.zero_grad(set_to_none=True)
             _, loss = model(X, Y)
             loss.backward()
             optimizer.step()
+            step += 1
+
+            if report_interval is not None and step % report_interval == 0:
+                losses = estimate_loss(model, dataloaders, device)
+                print(f"Step: {step}/{total_steps}, Train Loss: {losses['train']}, Val Loss: {losses['val']}")
+                results.append((step, losses['train'], losses['val']))
+                torch.save({'model': model.state_dict(), 'optimizer': optimizer.state_dict(), 'step': step}, save_path)
 
     return results
