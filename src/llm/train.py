@@ -125,8 +125,8 @@ class SFTDataset(Dataset):
     def __getitem__(self, index):
         return self.examples[index]
 
-def get_sft_loaders(tokenizer, block_size):
-    examples = make_sft_examples(n_examples=300)
+def get_sft_loaders(tokenizer, block_size, n_examples):
+    examples = make_sft_examples(n_examples=n_examples)
     n = int(0.8 * len(examples))
     train_examples = examples[:n]
     val_examples = examples[n:]
