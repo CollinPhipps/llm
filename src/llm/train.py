@@ -65,6 +65,7 @@ def train(model, dataloaders, optimizer, iters, device, save_dir, report_every=N
             optimizer.zero_grad(set_to_none=True)
             _, loss = model(X, Y)
             loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
             optimizer.step()
             step += 1
 
@@ -72,6 +73,6 @@ def train(model, dataloaders, optimizer, iters, device, save_dir, report_every=N
                 losses = estimate_loss(model, dataloaders, device)
                 print(f"Step: {step}/{total_steps}, Train Loss: {losses['train']}, Val Loss: {losses['val']}")
                 results.append((step, losses['train'], losses['val']))
-                torch.save({'model': model.state_dict(), 'optimizer': optimizer.state_dict(), 'step': step}, f'{save_dir}/ckpt_iter{iter}.pt')
+                torch.save({'model': model.state_dict(), 'optimizer': optimizer.state_dict(), 'step': step}, f'{save_dir}/ckpt_step{step}.pt')
 
     return results
