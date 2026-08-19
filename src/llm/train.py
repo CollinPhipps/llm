@@ -98,6 +98,8 @@ def make_sft_examples(n_examples=200, min_len=300, min_frac=0.15, max_frac=0.30,
         response_text = " ".join(words[cut:])
         examples.append((prompt_text, response_text))
 
+    return examples
+
 class SFTDataset(Dataset):
     def __init__(self, tokenizer, examples, block_size):
         self.examples = []
