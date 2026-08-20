@@ -4,9 +4,9 @@ A GPT-style transformer language model and BPE tokenizer, implemented from scrat
 
 ## Corpus & tokenizer
 
-**Corpus**: 8,000 abstracts pulled from arXiv via the `arxiv` package (`cs.LG`/`cs.AI`-heavy), filtered to exclude heavily-LaTeX abstracts, whitespace-normalized. ~11.5M characters total.
+**Corpus**: 8,000 abstracts pulled from arXiv via the `arxiv` package (`cs.LG`), whitespace-normalized. ~11.5M characters total.
 
-**Tokenizer**: byte-level BPE, trained from scratch — no `tiktoken`/`sentencepiece`/HuggingFace tokenizers. Vocab size 5,000 (293 base byte/character tokens + 4,707 learned merges), giving ~4.85 characters per token on this corpus.
+**Tokenizer**: byte-level BPE, trained from scratch. Vocab size 5,000 (293 base byte/character tokens + 4,707 learned merges), giving ~4.85 characters per token on this corpus.
 
 ## Model
 
